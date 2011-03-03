@@ -7,40 +7,48 @@
 
 = haml :_pagination, :layout => false
 
-%table.list
+%table#table-to-grid{:cellspacing => "0"}
 
   %thead
-    %td
+    %th
       id
-    %td
+    %th
       process
-    %td
+    %th
       participant
-    %td
+    %th{:style => "width: 60px;"}
       params
-    %td
+    %th
       dispatched at
-    %td
+    %th{:style => "width: 40px;"} 
       fields
+  %tbody
+    - @workitems.each do |wi|
+      %tr
+        %td
+          = alink(:workitems, wi.fei.sid, :text => wi.fei.sid)
+        %td
+          = alink(:processes, wi.wfid, :text => wi.wfid)
+        %td
+          &= wi.participant_name
+        %td
+          - params = (wi.fields['params'] || {}).dup
+          - params.delete('ref')
+          &= Rufus::Json.encode(params)[1..-2]
+        %td
+          - if wi.dispatched_at
+            = Time.parse(wi.dispatched_at).localtime.strftime('%Y/%m/%d %H:%M:%S')
+        %td
+          - fields = wi.fields.dup
+          - fields.delete('params')
+          - fields.delete('dispatched_at')
+          = Rufus::Json.encode(fields)[1..-2][0, 28]
 
-  - @workitems.each do |wi|
-    %tr
-      %td
-        = alink(:workitems, wi.fei.sid, :text => wi.fei.sid)
-      %td
-        = alink(:processes, wi.wfid, :text => wi.wfid)
-      %td
-        &= wi.participant_name
-      %td
-        - params = (wi.fields['params'] || {}).dup
-        - params.delete('ref')
-        &= Rufus::Json.encode(params)[1..-2]
-      %td
-        - if wi.dispatched_at
-          = Time.parse(wi.dispatched_at).localtime.strftime('%Y/%m/%d %H:%M:%S')
-      %td
-        - fields = wi.fields.dup
-        - fields.delete('params')
-        - fields.delete('dispatched_at')
-        = Rufus::Json.encode(fields)[1..-2][0, 28]
+:javascript
+  Ext.onReady(function(){
+    var grid = new Ext.ux.grid.TableGrid("table-to-grid", {
+      stripeRows: true // stripe alternate rows
+    });
+    grid.render();
+  });
 

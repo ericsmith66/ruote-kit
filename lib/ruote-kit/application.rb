@@ -49,6 +49,10 @@ module RuoteKit
       if env['HTTP_ACCEPT'] && env['HTTP_ACCEPT'] == 'application/json'
         format :json
       end
+      if env["HTTP_X_REQUESTED_WITH"]
+        @ajax_request = true
+        format :html
+      end
     end
 
     unless defined?(Rails)

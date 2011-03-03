@@ -5,30 +5,36 @@
 
 = haml :_pagination, :layout => false
 
-%table.list
- 
+%table#table-to-grid{:cellspacing => "0"}
   %thead
-    %td
+    %th{:style => "width: 60px;"}
       error
-    %td
+    %th
       process
-    %td
+    %th{:style => "width: 100px;"}
       message
-    %td
+    %th
       at
-    %td
+    %th
       action
+  %tbody
+    - @errors.each do |error|
+      %tr
+        %td
+          = alink(:errors, error.fei.sid)
+        %td
+          = alink(:errors, error.wfid)
+        %td
+          &= error.message
+        %td
+          = Time.parse(error.at).localtime.strftime('%Y/%m/%d %H:%M:%S')
+        %td
+          &= error.action
 
-  - @errors.each do |error|
-    %tr
-      %td
-        = alink(:errors, error.fei.sid)
-      %td
-        = alink(:errors, error.wfid)
-      %td
-        &= error.message
-      %td
-        = Time.parse(error.at).localtime.strftime('%Y/%m/%d %H:%M:%S')
-      %td
-        &= error.action
-
+:javascript
+  Ext.onReady(function(){
+    var grid = new Ext.ux.grid.TableGrid("table-to-grid", {
+      stripeRows: true // stripe alternate rows
+    });
+    grid.render();
+  });

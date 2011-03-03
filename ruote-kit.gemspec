@@ -3,7 +3,8 @@
 Gem::Specification.new do |s|
 
   s.name = 'ruote-kit'
-  s.version = File.read('lib/ruote-kit/version.rb').match(/VERSION = '([^']+)'/)[1]
+  #s.version = File.read('lib/ruote-kit/version.rb').match(/VERSION = '([^']+)'/)[1]
+  s.version = '2.2.0.3'
   s.platform = Gem::Platform::RUBY
   s.authors = [ 'Kenneth Kalmer', 'Torsten Schoenebaum', 'John Mettraux' ]
   s.email = [ 'kenneth.kalmer@gmail.com' ]

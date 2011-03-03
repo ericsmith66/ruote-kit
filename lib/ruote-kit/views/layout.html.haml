@@ -22,43 +22,50 @@
       - #%script{ :type => "text/javascript", :src => "/_ruote/javascripts/fluo-dial.js" }
 
   %body
-    #container
+    - if !@ajax_request
+      #container
 
-      #header
-        #hlogo
-          %img{ :src => '/_ruote/images/ruote.png' }
-        #htext
-          #ruote_kit
-            ruote-kit
-          #main_navigation
-            = alink(:processes, :head, :text => 'processes')
-            |
-            = alink(:workitems, :head, :text => 'workitems')
-            |
-            = alink(:errors, :head, :text => 'errors')
-            |
-            = alink(:schedules, :head, :text => 'schedules')
-            |
-            = alink(:participants, :text => 'participants')
-            ||
-            %a{ :href => '/_ruote/processes/new'} launch process
-        #hclear
+        #header
+          #hlogo
+            %img{ :src => '/_ruote/images/ruote.png' }
+          #htext
+            #ruote_kit
+              ruote-kit
+            #main_navigation
+              = alink(:processes, :head, :text => 'processes')
+              |
+              = alink(:workitems, :head, :text => 'workitems')
+              |
+              = alink(:errors, :head, :text => 'errors')
+              |
+              = alink(:schedules, :head, :text => 'schedules')
+              |
+              = alink(:participants, :text => 'participants')
+              ||
+              %a{ :href => '/_ruote/processes/new'} launch process
+          #hclear
 
-      #main
-        = yield
+        #main
+          = yield
 
+        - unless request.path.match(/\/processes\/new/)
+          #as_json
+            %a{ :href => as_json, :title => 'same page, but as JSON' }
+              as JSON
+    - else
+      = yield
       - unless request.path.match(/\/processes\/new/)
         #as_json
           %a{ :href => as_json, :title => 'same page, but as JSON' }
             as JSON
 
-      #footer
-        %div
-          &copy; 2009-2011 Kenneth Kalmer
-          |
-          %a{ :href => 'http://www.opensourcery.co.za' } blog
-          |
-          %a{ :href => 'http://github.com/tosch/ruote-kit' } source
-          |
-          %a{ :href => 'http://ruote.rubyforge.org' } powered by ruote
+    #footer
+      %div
+        &copy; 2009-2011 Kenneth Kalmer
+        |
+        %a{ :href => 'http://www.opensourcery.co.za' } blog
+        |
+        %a{ :href => 'http://github.com/tosch/ruote-kit' } source
+        |
+        %a{ :href => 'http://ruote.rubyforge.org' } powered by ruote
 

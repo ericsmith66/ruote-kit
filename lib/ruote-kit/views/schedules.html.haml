@@ -5,38 +5,45 @@
 
 = haml :_pagination, :layout => false
 
-%table.list
+%table#table-to-grid{:cellspacing => "0"}
  
   %thead
-    %td
+    %th
       owner / [ target ]
-    %td
+    %th
       process schedules
-    %td
+    %th
       type
-    %td
+    %th
       put at
-    %td
+    %th
       original
-    %td
+    %th
       at
-
-  - @schedules.each do |schedule|
-    %tr
-      %td
-        %div
-          = alink(:expressions, schedule['owner'].sid)
-        - if schedule['owner'] != schedule['target']
+  %tbody
+    - @schedules.each do |schedule|
+      %tr
+        %td
           %div
-            = alink(:expressions, schedule['target'].sid)
-      %td
-        = alink(:schedules, schedule['owner'].wfid)
-      %td
-        &= schedule['type']
-      %td
-        = Time.parse(schedule['put_at']).localtime.strftime('%Y/%m/%d %H:%M:%S')
-      %td
-        &= schedule['original']
-      %td
-        = Time.parse(schedule['at']).localtime.strftime('%Y/%m/%d %H:%M:%S')
+            = alink(:expressions, schedule['owner'].sid)
+          - if schedule['owner'] != schedule['target']
+            %div
+              = alink(:expressions, schedule['target'].sid)
+        %td
+          = alink(:schedules, schedule['owner'].wfid)
+        %td
+          &= schedule['type']
+        %td
+          = Time.parse(schedule['put_at']).localtime.strftime('%Y/%m/%d %H:%M:%S')
+        %td
+          &= schedule['original']
+        %td
+          = Time.parse(schedule['at']).localtime.strftime('%Y/%m/%d %H:%M:%S')
 
+:javascript
+  Ext.onReady(function(){
+    var grid = new Ext.ux.grid.TableGrid("table-to-grid", {
+      stripeRows: true // stripe alternate rows
+    });
+    grid.render();
+  });
