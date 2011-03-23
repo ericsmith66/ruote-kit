@@ -16,7 +16,7 @@ module RuoteKit
 
       def sample_process
         %{
-Ruote.process_definition :name => 'test', :revision => '0.1' do
+Ruote.process_definition :name => 'test', :revision => '0.1', :corporation_id => '1' do
   sequence do
     alice :task => 'clean car'
     bob :task => 'sell car'

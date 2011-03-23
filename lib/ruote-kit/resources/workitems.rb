@@ -4,7 +4,7 @@
 class RuoteKit::Application
 
   get '/_ruote/workitems/?' do
-
+    query = HashWithIndifferentAccess.new
     query = params.inject({}) { |h, (k, v)|
       h[k] = (Rufus::Json.decode(v) rescue v)
       h
@@ -19,11 +19,12 @@ class RuoteKit::Application
       @limit = @count
     end
 
-    query['skip'] = @skip
-    query['limit'] = @limit
+    query[:skip] = @skip
+    query[:limit] = @limit
+    puts '10'*40
+    puts query
 
-    @workitems = RuoteKit.engine.storage_participant.query(query)
-
+    @workitems = RuoteKit.engine.storage_participant.query({})
     respond_with :workitems
   end
 
